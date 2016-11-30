@@ -8,14 +8,14 @@ To install UniFlex framework with all available modules, please go through all s
 
 ## Path:
 
-cd <repo>/uniflex/
+	cd <repo>/uniflex/
 
-. set_path.sh 
+	. set_path.sh 
 
-#!/bin/bash
+	#!/bin/bash
 
-export MATLABPATH=$(pwd)/modules/wifi_intel/csi_matlab/
-export PATH=$PATH:$(pwd)/modules/wifi_intel/csi_netlink/
+	export MATLABPATH=$(pwd)/modules/wifi_intel/csi_matlab/
+	export PATH=$PATH:$(pwd)/modules/wifi_intel/csi_netlink/
 
 ## Channel State Information (CSI) 
 
