@@ -60,10 +60,12 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
             for ii in range(num_samples):
                 csi_entry = csi_trace[ii]
                 csi = self.eng.get_scaled_csi(csi_entry)
-                data = self.eng.squeeze_csi_data(csi)
+                #data = self.eng.squeeze_csi_data(csi)
+                #data = csi
 
-                mat = np.array(data._data).reshape(data.size[::-1]).T
-                res[ii] = mat
+                #mat = np.array(data._data).reshape(data.size[::-1]).T
+                #res[ii] = mat
+                res[ii] = csi
                 #csi_ant_1 = mat[:, 0]
                 #csi_ant_2 = mat[:, 1]
                 #csi_ant_3 = mat[:, 2]
