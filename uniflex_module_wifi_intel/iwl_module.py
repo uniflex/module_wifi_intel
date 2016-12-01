@@ -56,11 +56,16 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
             # 2. read from file
             csi_trace = self.eng.read_bf_file(tempfile)
 
-            csi_np = np.empty((num_samples, csi.size[0], csi.size[1], csi.size[2]), dtype=np.complex_)
+            num_samples = len(csi_trace)
+            Ntx = 3
+            Nrx = 3
+            Nsc = 30
+            #csi_np = np.empty((num_samples, csi.size[0], csi.size[1], csi.size[2]), dtype=np.complex_)
+            csi_np = np.zeros((num_samples, Ntx, Nrx, Nsc), dtype=np.complex_)
 
             for s in range(num_samples):
                 csi_entry = csi_trace[s]
-                csi = eng.get_scaled_csi(csi_entry)
+                csi = self.eng.get_scaled_csi(csi_entry)
                 for ii in range(csi.size[0]):
                     for jj in range(csi.size[1]):
                         for zz in range(csi.size[2]):

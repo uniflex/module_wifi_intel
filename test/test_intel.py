@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     csi = wifi.get_csi(3)
 
-    print(str(csi))
+    print(csi.shape)
 
     time.sleep(2)
 
