@@ -39,11 +39,11 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
         self.eng.quit()
 
 
-    def get_csi(self, num_samples):
+    def get_csi(self, num_samples, withMetaData=False):
         """
         Reads the next csi values.
         :param num_samples: the number of samples to read
-        :return: the csi values as numpy matrix of dimension: num_samples x Ntx x Nrx x Nsc
+        :return: for withMetaData=True: tbd ELSE: the csi values as numpy matrix of dimension: num_samples x Ntx x Nrx x Nsc
         """
 
         try:
@@ -57,21 +57,44 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
             csi_trace = self.eng.read_bf_file(tempfile)
 
             num_samples = len(csi_trace)
-            Ntx = 3
-            Nrx = 3
-            Nsc = 30
-            #csi_np = np.empty((num_samples, csi.size[0], csi.size[1], csi.size[2]), dtype=np.complex_)
-            csi_np = np.zeros((num_samples, Ntx, Nrx, Nsc), dtype=np.complex_)
 
-            for s in range(num_samples):
-                csi_entry = csi_trace[s]
-                csi = self.eng.get_scaled_csi(csi_entry)
-                for ii in range(csi.size[0]):
-                    for jj in range(csi.size[1]):
-                        for zz in range(csi.size[2]):
-                            csi_np[s][ii][jj][zz] = csi[ii][jj][zz]
+            if withMetaData:
+                all = []
 
-            return csi_np
+                for s in range(num_samples):
+
+                    csi_entry = csi_trace[s]
+                    csi = eng.get_scaled_csi(csi_entry)
+                    csi_np = np.zero(csi.size, dtype=np.complex_)
+                    for ii in range(csi.size[0]):
+	                for jj in range(csi.size[1]):
+		            for zz in range(csi.size[2]):
+			        csi_np[ii][jj][zz] = csi[ii][jj][zz]
+
+                res = {}
+                res['csi_scaled'] = csi_np			
+                for k in csi_entry.keys():
+                    res[k] = csi_entry[k]
+
+                all.append(res)
+	
+                return all
+
+            else:
+                Ntx = 3
+                Nrx = 3
+                Nsc = 30
+                csi_np = np.zeros((num_samples, Ntx, Nrx, Nsc), dtype=np.complex_)
+
+                for s in range(num_samples):
+                    csi_entry = csi_trace[s]
+                    csi = self.eng.get_scaled_csi(csi_entry)
+                    for ii in range(csi.size[0]):
+                        for jj in range(csi.size[1]):
+                            for zz in range(csi.size[2]):
+                                csi_np[s][ii][jj][zz] = csi[ii][jj][zz]
+
+                return csi_np
         except Exception as e:
             self.log.fatal("Failed to get CSI: %s" % str(e))
             raise exceptions.FunctionExecutionFailedException(
