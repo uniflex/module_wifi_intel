@@ -58,25 +58,27 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
 
             num_samples = len(csi_trace)
 
+            print('no. samples: %d' % num_samples)
+
             if withMetaData:
                 all = []
 
                 for s in range(num_samples):
-
                     csi_entry = csi_trace[s]
-                    csi = eng.get_scaled_csi(csi_entry)
-                    csi_np = np.zero(csi.size, dtype=np.complex_)
+                    csi = self.eng.get_scaled_csi(csi_entry)
+                    csi_np = np.zeros(csi.size, dtype=np.complex_)
+
                     for ii in range(csi.size[0]):
-	                for jj in range(csi.size[1]):
-		            for zz in range(csi.size[2]):
-			        csi_np[ii][jj][zz] = csi[ii][jj][zz]
+                        for jj in range(csi.size[1]):
+                            for zz in range(csi.size[2]):
+                                csi_np[ii][jj][zz] = csi[ii][jj][zz]
 
-                res = {}
-                res['csi_scaled'] = csi_np			
-                for k in csi_entry.keys():
-                    res[k] = csi_entry[k]
+                    res = {}
+                    res['csi_scaled'] = csi_np			
+                    for k in csi_entry.keys():
+                        res[k] = csi_entry[k]
 
-                all.append(res)
+                    all.append(res)
 	
                 return all
 

@@ -4,6 +4,7 @@
 import os
 import time
 import uniflex_module_wifi_intel
+import pickle
 
 '''
     Direct module test; without framework.
@@ -15,10 +16,13 @@ if __name__ == '__main__':
 
     wifi.my_start_function()
 
-    csi = wifi.get_csi(3)
+    samples = 100
+    csi = wifi.get_csi(samples, False)
 
     print(csi.shape)
 
-    time.sleep(2)
+    filehandler = open("csi_small.obj","wb")
+    pickle.dump(csi, filehandler, protocol=0)
+    filehandler.close()
 
     wifi.my_stop_function()
