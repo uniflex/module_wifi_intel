@@ -6,16 +6,9 @@ Device Module for Intel Wi-Fi cards
 ## Installation:
 To install UniFlex framework with all available modules, please go through all steps in [manifest](https://github.com/uniflex/manifests) repository.
 
-## Path:
+## Configure environment (path):
 
-	cd <repo>/uniflex/
-
-	. set_path.sh 
-
-	#!/bin/bash
-
-	export MATLABPATH=$(pwd)/modules/wifi_intel/csi_matlab/
-	export PATH=$PATH:$(pwd)/modules/wifi_intel/csi_netlink/
+	. env.sh 
 
 ## Channel State Information (CSI) 
 
