@@ -43,9 +43,8 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
         """
         Reads the next csi values.
         :param num_samples: the number of samples to read
-        :return: the csi values
+        :return: the csi values as numpy matrix of dimension: num_samples x Ntx x Nrx x Nsc
         """
-        res = {}
 
         try:
             tempfile = '/tmp/out'
@@ -57,23 +56,21 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
             # 2. read from file
             csi_trace = self.eng.read_bf_file(tempfile)
 
-            for ii in range(num_samples):
-                csi_entry = csi_trace[ii]
-                csi = self.eng.get_scaled_csi(csi_entry)
-                #data = self.eng.squeeze_csi_data(csi)
-                #data = csi
+            csi_np = np.empty((num_samples, csi.size[0], csi.size[1], csi.size[2]), dtype=np.complex_)
 
-                #mat = np.array(data._data).reshape(data.size[::-1]).T
-                #res[ii] = mat
-                res[ii] = csi
-                #csi_ant_1 = mat[:, 0]
-                #csi_ant_2 = mat[:, 1]
-                #csi_ant_3 = mat[:, 2]
+            for s in range(num_samples):
+                csi_entry = csi_trace[s]
+                csi = eng.get_scaled_csi(csi_entry)
+                for ii in range(csi.size[0]):
+                    for jj in range(csi.size[1]):
+                        for zz in range(csi.size[2]):
+                            csi_np[s][ii][jj][zz] = csi[ii][jj][zz]
 
+            return csi_np
         except Exception as e:
             self.log.fatal("Failed to get CSI: %s" % str(e))
             raise exceptions.FunctionExecutionFailedException(
                 func_name=inspect.currentframe().f_code.co_name,
                 err_msg='Failed to get CSI: ' + str(e))
 
-        return res
+        return None 
