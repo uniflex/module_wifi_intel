@@ -33,11 +33,13 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
     def my_start_function(self):
         self.eng = matlab.engine.start_matlab()
 
-
     @modules.on_exit()
     def my_stop_function(self):
         self.eng.quit()
 
+    def debug(self, out):
+        self.log.info('called with %s' % out)
+        return out
 
     def get_csi(self, num_samples, withMetaData=False):
         """
@@ -58,7 +60,7 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
 
             num_samples = len(csi_trace)
 
-            print('no. samples: %d' % num_samples)
+            self.log.info('no. samples: %d' % num_samples)
 
             if withMetaData:
                 all = []
