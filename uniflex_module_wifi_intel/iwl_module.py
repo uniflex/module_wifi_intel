@@ -33,11 +33,11 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
     def my_start_function(self):
         super().my_start_function()
         self.eng = matlab.engine.start_matlab()
-        self.log.info('matlab engine started')
 
     @modules.on_exit()
     def my_stop_function(self):
         self.eng.quit()
+        super().my_stop_function()
 
     def debug(self, out):
         self.log.info('called with %s' % out)
