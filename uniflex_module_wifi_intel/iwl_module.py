@@ -31,6 +31,7 @@ class Iwl5300Module(uniflex_module_wifi.WifiModule):
 
     @modules.on_start()
     def my_start_function(self):
+        super().my_start_function()
         self.eng = matlab.engine.start_matlab()
         self.log.info('matlab engine started')
 
