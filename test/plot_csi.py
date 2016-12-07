@@ -10,7 +10,7 @@ if __name__ == '__main__':
     file.close()
 
     fig, ax = plt.subplots()
-    for sample in range(20):
+    for sample in range(59):
         rx1 = object_file[sample][0][0]
         rx2 = object_file[sample][0][1]
         rx3 = object_file[sample][0][2]
